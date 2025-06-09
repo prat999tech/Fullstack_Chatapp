@@ -15,5 +15,4 @@ message:{
     required:true
     },
 },{timestamps:true})
-const message=mongoose.model("message",messageschema)
-export default message
+export const message=mongoose.model("message",messageschema)
