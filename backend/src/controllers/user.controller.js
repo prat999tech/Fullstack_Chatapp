@@ -18,7 +18,9 @@ const generateaccessandrefreshtoken=async(userId)=>{
 
 }
 const signup=asyncHandler(async(req,res)=>{
-    try{
+    console.log("Signup endpoint hit!"); // Add this for debugging
+    console.log("Request body:", req.body);
+    
         const {fullname,email,password}=req.body
          if (
         [fullname, email, password].some((field) => field?.trim() === "")
@@ -44,7 +46,7 @@ const signup=asyncHandler(async(req,res)=>{
     const createduser=await User.findById(user._id).select("-password -refreshtoken")
     if(createduser){
         return res.status(200).json(
-            apiresponse(200, "User created successfully", createduser)
+           new apiresponse(200, "User created successfully", createduser)
         )
     }
     else{
@@ -52,13 +54,11 @@ const signup=asyncHandler(async(req,res)=>{
     }
     
 
-    }catch(error){
-        console.log(error)
-    }
+    
 
 })
-const login=asyncHandler(async(res,req)=>{
-    try{
+const login=asyncHandler(async(req,res)=>{
+    
         const {email,fullname,password}=req.body
         if(!fullname || !email){
             throw new apierror(400,"fullname and email are required")
@@ -87,9 +87,7 @@ const login=asyncHandler(async(res,req)=>{
          )
 
 
-    }catch(error){
-        console.log(error)
-    }
+   
 })
 const logoutUser=asyncHandler(async (req,res)=>{
     try{
@@ -173,4 +171,4 @@ const changepassword=asyncHandler(async(req,res)=>{
         changepassword,
 
 
-     }
+     };
