@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom'; // <-- Add this import
+import axios from 'axios'; // Ensure axios is installed and imported
  
 function Signup() {
     const {
@@ -20,8 +21,23 @@ function Signup() {
             password: data.password,
             confirmPassword: data.confirmPassword
         }
-        console.log(userinfo);
-        
+        //console.log(userinfo);
+        axios.post("http://localhost:8001/api/v1/user/signup", userinfo)
+        .then((response) => {
+            console.log( response.data);
+            if(response.data) {
+             alert("User signed up successfully");
+
+            }
+            localStorage.setItem("ChatApp",JSON.stringify(response.data));
+            // Handle successful signup, e.g., redirect to login page
+        })
+        .catch((error) => {
+            if(error.response ) {
+                alert(error.response.data.error || "An error occurred during signup");
+            }
+            // Handle error, e.g., show an error message
+        });
     };
     const onError = (errors) => {
         console.error(errors);

@@ -1,7 +1,43 @@
 import React from 'react'
+import { useForm } from 'react-hook-form';
+import axios from 'axios'; // Ensure axios is installed and imported
 
 
 function Login() {
+      const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+      } = useForm();
+    
+       const onSubmit = (data) => {
+            const userinfo={
+                fullname: data.fullname,
+                email: data.email,
+                password: data.password,
+            }
+            //console.log(userinfo);
+            axios.post("http://localhost:8001/api/v1/user/login", userinfo)
+            .then((response) => {
+                console.log( response.data);
+                if(response.data) {
+                 alert("User signed up successfully");
+    
+                }
+                localStorage.setItem("ChatApp",JSON.stringify(response.data));
+                // Handle successful signup, e.g., redirect to login page
+            })
+            .catch((error) => {
+                if(error.response ) {
+                    alert(error.response.data.error || "An error occurred during signup");
+                }
+                // Handle error, e.g., show an error message
+            });
+        };
+        const onError = (errors) => {
+            console.error(errors);
+        }
   return (
    <>
    <div>
@@ -13,7 +49,7 @@ function Login() {
         <h4 className="text-white text-base mt-6">Login into your account</h4>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid sm:grid-cols-2 gap-8">
           <div>
             <label className="text-white text-sm font-medium mb-2 block">Full Name</label>
@@ -22,7 +58,7 @@ function Login() {
           
           <div>
             <label className="text-white text-sm font-medium mb-2 block">Email Id</label>
-            <input name="email" type="text" className="bg-slate-100 w-full text-white text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" placeholder="Enter email" />
+            <input name="email" type="text" className="bg-slate-100 w-full text-white text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" placeholder="Enter email" {...register("email", { required: true })}/>
           </div>
            <div>
            <label className="text-white text-sm font-medium mb-2 block">Confirm password</label>
@@ -32,7 +68,7 @@ function Login() {
           
           <div>
             <label className="text-white text-sm font-medium mb-2 block"> Password</label>
-            <input name="cpassword" type="password" className="bg-slate-100 w-full text-white text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" placeholder=" password" />
+            <input name="cpassword" type="password" className="bg-slate-100 w-full text-white text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" placeholder=" password" {...register("password", { required: true })} />
           </div>
         </div>
 
