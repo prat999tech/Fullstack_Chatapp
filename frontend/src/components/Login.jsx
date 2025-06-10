@@ -1,9 +1,11 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import axios from 'axios'; // Ensure axios is installed and imported
-
+import { useAuth } from '../context/Authprovider'; // Assuming you have a context for authentication
 
 function Login() {
+        const {authUser, setAuthUser} = useAuth(); // Assuming you have a context for authentication
+    
       const {
         register,
         handleSubmit,
@@ -26,7 +28,9 @@ function Login() {
     
                 }
                 localStorage.setItem("ChatApp",JSON.stringify(response.data));
-                // Handle successful signup, e.g., redirect to login page
+                setAuthUser(response.data);
+
+                // Handle//  successful signup, e.g., redirect to login page
             })
             .catch((error) => {
                 if(error.response ) {

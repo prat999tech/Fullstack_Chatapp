@@ -19,7 +19,7 @@ export default router
 
 
 import { Router } from "express"
-import { login, signup, logoutUser, changepassword } from "../controllers/user.controller.js"
+import { login, signup, logoutUser, changepassword, allUsers } from "../controllers/user.controller.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 
 const router = Router()
@@ -30,6 +30,7 @@ router.post("/signup", signup)
 router.post("/login", login)
 router.route("/logout").post(verifyJWT, logoutUser)
 router.route("/changepassword").patch(verifyJWT, changepassword)
+router.route("/allusers").get(verifyJWT,allUsers)
 
 export default router
 

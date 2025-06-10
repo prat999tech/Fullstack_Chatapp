@@ -163,12 +163,39 @@ const changepassword=asyncHandler(async(req,res)=>{
             )
         )
      })
+     const allUsers = asyncHandler(async (req, res) => {
+        try {
+            // Get the logged-in user's ID from req.user (set by verifyJWT middleware)
+            const loggedInUserId = req.user._id;
+
+            // Find all users except the logged-in user
+            // The query condition: Find all users whose `_id` is NOT EQUAL ($ne) to the `loggedInUser`'s ID.
+            const users = await User.find({ 
+                _id: { $ne: loggedInUserId } 
+            })
+            .select("-password -refreshtoken"); // Exclude sensitive fields
+
+            if (!users?.length) {
+                return res.status(200).json(
+                    new apiresponse(200, [], "No users found")
+                );
+            }
+
+            return res.status(200).json(
+                new apiresponse(200, users, "Users fetched successfully")
+            );
+
+        } catch (error) {
+            throw new apierror(500, "Error while fetching users");
+        }
+    });
      export{
         login,
         signup,
         refreshAcessToken,
         logoutUser,
         changepassword,
+        allUsers
 
 
      };
