@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "backend for chat application",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
-  "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
   "author": "pratik singh",
   "license": "ISC",
@@ -17,6 +17,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1"
   }
 }

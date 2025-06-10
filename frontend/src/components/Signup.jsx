@@ -24,7 +24,7 @@ function Signup() {
             confirmPassword: data.confirmPassword
         }
         //console.log(userinfo);
-        await axios.post("http://localhost:8001/api/v1/user/signup", userinfo)
+        await axios.post("/api/user/signup", userinfo)
         .then((response) => {
             console.log( response.data);
             if(response.data) {

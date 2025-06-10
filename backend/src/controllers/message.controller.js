@@ -3,6 +3,7 @@ import {message} from "../models/message.model.js";
 import { asyncHandler } from "../utils/asynchandler.js";
 import { apierror } from "../utils/apierror.js";
 import { apiresponse } from "../utils/apiresponse.js";
+import { getreceiversocketid } from "../services/socket.io.js";
 
 export const sendMessage=asyncHandler(async(req,res)=>{
     try{
@@ -33,8 +34,16 @@ export const sendMessage=asyncHandler(async(req,res)=>{
         if(newmessage){
             conversation.messages.push(newmessage._id)
         }
-        await conversation.save()
-        await newmessage.save()
+        //await conversation.save()
+        //await newmessage.save()
+        await Promise.all([
+            newconversation.save(),
+            newmessage.save()
+        ])
+        const receiversocketId= getreceiversocketid(receiverid);
+        if(receiversocketId){
+            io.to(receiversocketId).emit("newmessage", newmessage);
+        }
         return res.status(200).json(
             new apiresponse(200,"message added successfully",newmessage)
         )

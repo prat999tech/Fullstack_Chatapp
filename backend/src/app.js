@@ -28,8 +28,8 @@ export { app }
 import cors from "cors"
 import express from "express"
 import cookieParser from "cookie-parser"
+import { app } from "./services/socket.io.js"
 
-const app = express()
 
 // Set up ALL middleware FIRST
 app.use(cors({
